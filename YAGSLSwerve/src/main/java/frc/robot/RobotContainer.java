@@ -6,11 +6,17 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.SwerveSubsytem;
 import swervelib.SwerveInputStream;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants;
 
 
 /**
@@ -26,6 +32,59 @@ public class RobotContainer {
  
 
   private final XboxController driver = new XboxController(0);
+      private final Joystick operator = new Joystick(1);
+
+   /* Operator Buttons */
+    private final JoystickButton elevatorUp = new JoystickButton(operator, controllerConstants.elevatorUp);
+    private final JoystickButton elevatorDown = new JoystickButton(operator, controllerConstants.elevatorDown);
+    
+    private final JoystickButton L1 = new JoystickButton(operator, controllerConstants.L1);
+    private final JoystickButton L2 = new JoystickButton(operator, controllerConstants.L2);
+    private final JoystickButton L3 = new JoystickButton(operator, controllerConstants.L3);
+    private final JoystickButton L4 = new JoystickButton(operator, controllerConstants.L4);
+
+
+     public final class controllerConstants{
+
+        /*TODO add button bindings */
+
+
+        /*Driver Constants */
+
+        /*Algae */
+
+        public static int pickUp = 0;
+        
+        
+        /*Operator Constants */   
+        public static final double stickDeadband = 0.1;
+       
+       
+       /*Elevator & Coral */
+        public static final int elevatorUp = 5;
+        public static final int elevatorDown = 6;
+        public static final int speedNerf = 3;
+        
+        public static final int L1 = 2;
+        public static final int L2 = 0;
+        public static final int L3 = 0;
+        public static final int L4 = 0;
+
+
+
+
+
+
+
+    }
+
+
+
+    /* Subsystems */
+  
+    private final LiftSubsystem l_lift = new LiftSubsystem();
+    private final CoralSubsystem c_coral = new CoralSubsystem();
+ 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   
@@ -66,7 +125,45 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     
+      /* Driver Buttons */
+
+      /*Driver buttons */
+
+      /*Chassis */
+     
+
+      
+      
+       /* Operator Buttons */
+     
+      /*Elevator&Coral buttons */
+      elevatorUp.whileTrue(new InstantCommand(() -> l_lift.setLiftSpeed(-.25)));
+      elevatorUp.whileFalse(new InstantCommand(() -> l_lift.setLiftSpeed(0)));
+
+      elevatorDown.whileTrue(new InstantCommand(() -> l_lift.setLiftSpeed(.25)));
+      elevatorDown.whileFalse(new InstantCommand(() -> l_lift.setLiftSpeed(0))); 
+      
+      L1.onTrue(new InstantCommand(() ->l_lift.setPos(6.3))); 
+      L1.onFalse(new InstantCommand(() -> l_lift.setLiftSpeed(0)));
+
+
+      L2.onTrue(new InstantCommand(() ->l_lift.setPos(6.3)));
+      L2.onFalse(new InstantCommand(() -> l_lift.setLiftSpeed(0)));
+
+
+      L3.onTrue(new InstantCommand(() ->l_lift.setPos(6.3)));
+      L3.onFalse(new InstantCommand(() -> l_lift.setLiftSpeed(0)));
+
+
+      L4.onTrue(new InstantCommand(() ->l_lift.setPos(6.3)));
+      L4.onFalse(new InstantCommand(() -> l_lift.setLiftSpeed(0)));
+
+      
+      
+      //-4
   }
+    
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
